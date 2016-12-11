@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Lançamentos</ion-title>
+
+    <button ion-button menuToggle positive>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <date-filter [start-date]="dataFiltro" (changeMonth)="updateMonth($event)" (clickMonth)="onClickMonth()"></date-filter>
+
+  <ion-list>
+    <ion-item-sliding *ngFor="let item of listLancamentos">
+      <ion-item [ngClass]="{entrada: lancamentoEntradaSaida(item), saida: !lancamentoEntradaSaida(item)}" (click)="edit(item)">
+        <ion-row>
+          <ion-col width-67>
+            <h2>{{item.descricao}}</h2>
+            <p>{{item.conta}}</p>
+            <p>{{getDate(item.data)}}</p>
+          </ion-col>
+          <ion-col width-33>
+            <p>{{item.valor | currency:"BRL":true:"1.2"}}</p>
+            <p>{{item.pago == 1 ? 'Pago': 'Não Pago' }}</p>
+          </ion-col>
+        </ion-row>
+      </ion-item>
+      <ion-item-options>
+        <button ion-button color="favorite" (click)="changePaymentStatus(item)"><ion-icon name=cash></ion-icon>{{paymentButtonText(item)}}</button>
+      </ion-item-options>
+      <ion-item-options side="left">
+        <button ion-button color="danger" (click)="delete(item)"><ion-icon name=trash></ion-icon>Remover</button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+  <ion-fab bottom right>
+    <button ion-fab color="danger" (click)="insert()"><ion-icon name="add"></ion-icon></button>
+  </ion-fab>
+
+</ion-content>
